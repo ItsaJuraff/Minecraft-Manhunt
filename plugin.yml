@@ -7,3 +7,6 @@ commands:
       description: tests the plugin
       usage: /test
       # permissions: your.permission here
+   team:
+      description: manages team
+      usage: /team <other-command>
