@@ -3,3 +3,7 @@ main: juraff.minecraft.manhunt.Manhunt
 version: 1.0
 api-version: 1.13
 commands:
+   test:
+      description: tests the plugin
+      usage: /test
+      # permissions: your.permission here
