@@ -48,7 +48,7 @@ public class CommandManhunt implements CommandExecutor {
 			// add player to team
 			rc = this.game.joinTeam(player, team);
 			if (rc) {
-				String msg = String.format("Joined team %s", game.getTeams().get(team));
+				String msg = String.format("Joined team %s", game.getTeams().get(team).getName());
 				sender.sendMessage(msg);
 			}
 			return rc;
