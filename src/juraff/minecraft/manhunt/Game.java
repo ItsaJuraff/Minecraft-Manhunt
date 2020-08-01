@@ -5,25 +5,35 @@ import java.util.Vector;
 import org.bukkit.entity.Player;
 
 public class Game {
+	private String[] names = {"Speedrunners", "Hunters", "Spectators"};
 	private Vector<Team> teams;
 	
 	/** default constructor */
 	public Game() {
-		final String[] names = {"Speedrunners", "Hunters", "Spectators"};
-		
 		this.teams = new Vector<Team>();
-		for (int i = 0; i < names.length; i++) {
-			this.teams.add(new Team(names[i]));
-		}
+		this.addTeams(this.names);
+
 	}
 	
 	/** constructor custom names */
 	public Game(String[] names) {
+		this.names = names;
+		this.addTeams(this.names);
+	}
+	
+	
+	/** creates a new team vector with names */
+	private void addTeams(String[] names) {
 		this.teams = new Vector<Team>();
-		for (int i = 0; i < names.length; i++) {
-			this.teams.add(new Team(names[i]));
+		for (int i = 0; i < this.names.length; i++) {
+			this.teams.add(new Team(this.names[i]));
 		}
 	}
+	
+	
+	/** getter for team */
+	public Vector<Team> getTeams() { return this.teams; }
+	
 	
 	/** adds player to team */
 	public boolean joinTeam(Player player, int team) {
@@ -31,16 +41,18 @@ public class Game {
 		return teams.get(team).addPlayer(player);
 	}
 	
+	
 	/** removes player from current team */
 	public boolean leaveTeam(Player player) {
 		int index;
 		index = this.getTeam(player);
-		if (index < -1) {
+		if (index > -1) {
 			return teams.get(index).removePlayer(player);
 		} else {
-			return true;
+			return false;
 		}
 	}
+	
 	
 	/**
 	 * gets the index of the team that player is current a part of

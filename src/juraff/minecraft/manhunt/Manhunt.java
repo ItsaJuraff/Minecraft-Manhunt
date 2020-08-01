@@ -13,7 +13,6 @@ public class Manhunt extends JavaPlugin {
 	}
 	
 	@Override
-	public void onDisable() {
-	}
+	public void onDisable() { }
 
 }
