@@ -9,7 +9,7 @@ public class Manhunt extends JavaPlugin {
 		
 		// register commands
 		this.getCommand("test").setExecutor(new CommandTest());
-		this.getCommand("team").setExecutor(new CommandTeam(game));
+		this.getCommand("manhunt").setExecutor(new CommandManhunt(game));
 	}
 	
 	@Override

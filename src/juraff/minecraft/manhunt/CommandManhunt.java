@@ -5,12 +5,12 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class CommandTeam implements CommandExecutor {
+public class CommandManhunt implements CommandExecutor {
 	/** stores team instance */
 	private Game game;
 	
 	/** constructor CommandTeam */
-	public CommandTeam(Game game) {
+	public CommandManhunt(Game game) {
 		this.game = game;
 	}
 	

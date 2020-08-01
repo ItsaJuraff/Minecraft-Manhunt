@@ -7,6 +7,7 @@ commands:
       description: tests the plugin
       usage: /test
       # permissions: your.permission here
-   team:
+   manhunt:
       description: manages team
-      usage: /team <other-command>
+      usage: /manhunt <other-command>
+      aliases: [mh]
