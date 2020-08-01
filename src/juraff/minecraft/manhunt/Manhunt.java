@@ -5,11 +5,11 @@ public class Manhunt extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		// create object to holds teams
-		Team team = new Team();
+		Game game = new Game();
 		
 		// register commands
 		this.getCommand("test").setExecutor(new CommandTest());
-		this.getCommand("team").setExecutor(new CommandTeam(team));
+		this.getCommand("team").setExecutor(new CommandTeam(game));
 	}
 	
 	@Override
