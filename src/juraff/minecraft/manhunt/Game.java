@@ -5,19 +5,19 @@ import java.util.Vector;
 import org.bukkit.entity.Player;
 
 public class Game {
-	private String[] names = {"Speedrunners", "Hunters", "Spectators"};
+	private String[] names = {"Hunters", "Speedrunners", "Spectators"};
 	private Vector<Team> teams;
 	
 	/** default constructor */
 	public Game() {
 		this.teams = new Vector<Team>();
 		this.addTeams(this.names);
-
 	}
 	
 	/** constructor custom names */
 	public Game(String[] names) {
 		this.names = names;
+		this.teams = new Vector<Team>();
 		this.addTeams(this.names);
 	}
 	
@@ -41,7 +41,6 @@ public class Game {
 		return teams.get(team).addPlayer(player);
 	}
 	
-	
 	/** removes player from current team */
 	public boolean leaveTeam(Player player) {
 		int index;
@@ -52,7 +51,6 @@ public class Game {
 			return false;
 		}
 	}
-	
 	
 	/**
 	 * gets the index of the team that player is current a part of

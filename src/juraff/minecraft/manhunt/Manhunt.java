@@ -7,6 +7,9 @@ public class Manhunt extends JavaPlugin {
 		// create object to holds teams
 		Game game = new Game();
 		
+		// register events
+		this.getServer().getPluginManager().registerEvents(new ListenerJoin(game), this);
+		
 		// register commands
 		this.getCommand("test").setExecutor(new CommandTest());
 		this.getCommand("manhunt").setExecutor(new CommandManhunt(game));
