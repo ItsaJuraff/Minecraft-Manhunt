@@ -18,6 +18,7 @@ public class CommandManhunt implements CommandExecutor {
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+		boolean rc = false;
 		Player player = (Player) sender;
 		
 		if (args.length == 0) {
@@ -44,14 +45,20 @@ public class CommandManhunt implements CommandExecutor {
 					}
 				}
 			}
-			// TODO add which team that you joined
-			sender.sendMessage("you have joined a team");
 			// add player to team
-			return this.game.joinTeam(player, team);
+			rc = this.game.joinTeam(player, team);
+			if (rc) {
+				String msg = String.format("Joined team %s", game.getTeams().get(team));
+				sender.sendMessage(msg);
+			}
+			return rc;
 		} else if (args[0].equalsIgnoreCase("leave")) {
-			// remove player from team
-			sender.sendMessage("left team");
-			return this.game.leaveTeam(player);
+			// leave team
+			rc = this.game.leaveTeam(player);
+			if (rc) {
+				sender.sendMessage("Left team");
+			}
+			return rc;
 		}
 		return true;
 	}
