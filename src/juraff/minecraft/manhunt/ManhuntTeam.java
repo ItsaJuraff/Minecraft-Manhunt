@@ -12,24 +12,27 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
 public class ManhuntTeam {
+	/** name representing ManhuntTeam */
 	private String name;
+	/** minecraft Team */
 	private Team team;
+	/** minecraft Score for players on each team */
 	private Score memberScore;
-	private GameMode gamemode;
+	/** default gamemode */
+	private GameMode gamemode = GameMode.SURVIVAL;
+	/** Vector of player on the team */
 	private Vector<Player> players;
 
 	
 	/**
-	 * creates team with name, scoreboard objectives, and default gamemode
+	 * default constructor for ManhuntTeam, default gamemode is survival
 	 * 
 	 * @param name name of team
 	 * @param obj objective to display
-	 * @param gamemode desired gamemode
 	 * */
-	public ManhuntTeam(String name, Objective obj, GameMode gamemode) {
+	public ManhuntTeam(String name, Objective obj) {
 		this.players = new Vector<Player>();
 		this.name = name;
-		this.gamemode = gamemode;
 		
 		// create new team
 		Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
@@ -43,6 +46,20 @@ public class ManhuntTeam {
 		// create score
 		this.memberScore = obj.getScore(this.name);
 	}
+	
+	
+	/**
+	 * creates team with name, scoreboard objectives, and default gamemode
+	 * 
+	 * @param name name of team
+	 * @param obj objective to display
+	 * @param gamemode desired gamemode
+	 * */
+	public ManhuntTeam(String name, Objective obj, GameMode gamemode) {
+		this(name, obj);
+		this.gamemode = gamemode;
+	}
+	
 	
 	/**
 	 * name getter
