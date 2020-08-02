@@ -17,9 +17,6 @@ public class ManhuntGame {
 	/** vector to stores teams in */
 	private Vector<ManhuntTeam> teams;
 	
-	/** holds return codes for functions where applicable */
-	public boolean rc;
-	
 	
 	/** default constructor */
 	public ManhuntGame() {
@@ -89,13 +86,13 @@ public class ManhuntGame {
 	}
 	
 	/**
-	 * removes player from current team
+	 * removes player from their current team
 	 * 
 	 * @param player
 	 * */
 	public void leaveTeam(Player player) {
 		int index;
-		index = this.getTeam(player);
+		index = this.getPlayerTeamIndex(player);
 		
 		// remove player
 		if (index > -1) {
@@ -107,11 +104,28 @@ public class ManhuntGame {
 	}
 	
 	/**
+	 * gets team that the player is currently on
+	 * 
+	 * @param player
+	 * @return ManhuntTeam null if no team if found
+	 */
+	public ManhuntTeam getPlayerTeam(Player player) {
+		ManhuntTeam team = null;
+		for (ManhuntTeam t : this.teams) {
+			if (t.checkPlayer(player)) {
+				team = t;
+				break;
+			}
+		}
+		return team;
+	}
+	
+	/**
 	 * gets the index of the team that player is current a part of
 	 * 
 	 * @return index of team, values of -1 means player is not a part of a team
 	 * */
-	public int getTeam(Player player) {
+	public int getPlayerTeamIndex(Player player) {
 		int team_idx = -1;
 		for (int i = 0; i < this.teams.size(); i++) {
 			if (teams.get(i).checkPlayer(player)) {

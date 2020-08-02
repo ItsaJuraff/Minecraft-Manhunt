@@ -46,7 +46,7 @@ public class ListenerCompass implements Listener{
 			ManhuntTeam runners = game.getTeams().get(ManhuntTeamName.Speedrunners.getIndex());
 			
 			// loop through players
-			for(Player player2 : runners.getPlayers()) {
+			for(Player player2 : runners.getAllPlayers()) {
 				// checks
 				if (player2 == user) {
 					continue;

@@ -28,7 +28,7 @@ public class ManhuntTeam {
 	 * default constructor for ManhuntTeam, default gamemode is survival
 	 * 
 	 * @param name name of team
-	 * @param obj objective to display
+	 * @param obj objective to display current team count
 	 * */
 	public ManhuntTeam(String name, Objective obj) {
 		this.players = new Vector<Player>();
@@ -52,7 +52,7 @@ public class ManhuntTeam {
 	 * creates team with name, scoreboard objectives, and default gamemode
 	 * 
 	 * @param name name of team
-	 * @param obj objective to display
+	 * @param obj objective to display current team count
 	 * @param gamemode desired gamemode
 	 * */
 	public ManhuntTeam(String name, Objective obj, GameMode gamemode) {
@@ -64,15 +64,14 @@ public class ManhuntTeam {
 	/**
 	 * name getter
 	 * 
-	 * @return name of team
-	 * @see String
+	 * @return name
 	 * */
 	public String getName() { return this.name; }
 	
 	/**
 	 * name setter 
 	 * 
-	 * @param name name of team
+	 * @param name desired name
 	 * */
 	public void setName(String name) { this.name = name; }
 	
@@ -80,9 +79,8 @@ public class ManhuntTeam {
 	 * gets the vector of players
 	 * 
 	 * @return vector of players
-	 * @see Player
 	 * */
-	public Vector<Player> getPlayers() {
+	public Vector<Player> getAllPlayers() {
 		return players;
 	}
 	
@@ -95,7 +93,6 @@ public class ManhuntTeam {
 	 * gets the number of players on the team
 	 * 
 	 * @return number of players
-	 * @see int
 	 * */
 	public int getNumPlayers() {
 		return players.size();
@@ -129,7 +126,6 @@ public class ManhuntTeam {
 	 * 
 	 * @param index index of player vector to get
 	 * @return player at index
-	 * @see Player
 	 * */
 	public Player getPlayer(int index) {
 		return this.players.get(index);
@@ -138,9 +134,8 @@ public class ManhuntTeam {
 	/**
 	 * checks if player is on team, returns index of player if found, -1 if not found
 	 * 
-	 * @param Player player to get index of
+	 * @param player player to get index of
 	 * @return index of player
-	 * @see int
 	 * */
 	public int getPlayerIndex(Player player) {
 		return this.players.indexOf(player);
@@ -150,8 +145,7 @@ public class ManhuntTeam {
 	 * checks if player exists on the team
 	 * 
 	 * @param player player to check for
-	 * @return check if player is on team
-	 * @see boolean
+	 * @return boolean if player is on team
 	 * */
 	public boolean checkPlayer(Player player) {
 		return this.players.contains(player);
