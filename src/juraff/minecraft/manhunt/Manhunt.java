@@ -9,7 +9,7 @@ public class Manhunt extends JavaPlugin {
 		
 		// register events
 		this.getServer().getPluginManager().registerEvents(new ListenerJoin(game), this);
-		this.getServer().getPluginManager().registerEvents(new ListenerCompass(), this);
+		this.getServer().getPluginManager().registerEvents(new ListenerCompass(game), this);
 		
 		// register commands
 		this.getCommand("test").setExecutor(new CommandTest());

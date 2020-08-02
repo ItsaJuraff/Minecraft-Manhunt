@@ -8,9 +8,23 @@ import net.md_5.bungee.api.ChatColor;
 
 import org.bukkit.event.block.Action;
 import org.bukkit.entity.Player;
+
+import java.util.Vector;
+
 import org.bukkit.Location;
 
 public class ListenerCompass implements Listener{
+	/** game instance */
+	private ManhuntGame game;
+	
+	/**
+	 * default constructor
+	 * 
+	 * @param game manhunt game
+	 */
+	public ListenerCompass(ManhuntGame game) {
+		this.game = game;
+	}
 
 	@EventHandler
 	public void onItemClick(PlayerInteractEvent event) {
@@ -18,12 +32,16 @@ public class ListenerCompass implements Listener{
 		Player user = event.getPlayer();
 
 		if(event.getAction() == (Action.RIGHT_CLICK_AIR) || event.getAction() == (Action.RIGHT_CLICK_BLOCK)) {
+			// init variables
 			Player target = null;
 			double lowest = 0.;
 			
+			// get runner team
+			ManhuntTeam runners = game.getTeams().get(ManhuntTeamName.Speedrunners.getIndex());
+			
 			// TODO should be changed to team
 			// loop through players
-			for(Player player2 : user.getWorld().getPlayers()) {
+			for(Player player2 : runners.getPlayers()) {
 				if (player2 == user) {
 					continue;
 				}
@@ -39,9 +57,15 @@ public class ListenerCompass implements Listener{
 				}
 			}
 			
-			// send message to user
-			user.sendMessage(ChatColor.GREEN + String.format("Tracking %s" , target.getName()));
-			event.getPlayer().setCompassTarget(target.getLocation());
+			if (target == null) {
+				// send message when player not found
+				user.sendMessage(ChatColor.RED + "No player found!");
+			} else {
+				// send message to user
+				user.sendMessage(ChatColor.GREEN + String.format("Tracking %s" , target.getName()));
+				event.getPlayer().setCompassTarget(target.getLocation());
+			}
+
 	    }
 	}
 }
