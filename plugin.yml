@@ -10,4 +10,4 @@ commands:
    manhunt:
       description: manages team
       usage: /manhunt <other-command>
-      aliases: [mh]
+      aliases: [mh, hunt]

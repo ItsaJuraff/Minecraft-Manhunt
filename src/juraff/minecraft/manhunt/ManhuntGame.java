@@ -31,7 +31,14 @@ public class ManhuntGame {
 	public ManhuntGame() {
 		// create scoreboard
 		Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
-		Objective obj = board.registerNewObjective("TeamCount", "dummy", "Teams");
+		// create new objective if does not exist
+		Objective obj;
+		try {
+			obj = board.registerNewObjective("TeamCount", "dummy", "Teams");
+		} catch (IllegalArgumentException e) {
+			obj = board.getObjective("TeamCount");
+		}
+		
 		obj.setDisplaySlot(DisplaySlot.SIDEBAR);
 		
 		// register teams
@@ -43,6 +50,7 @@ public class ManhuntGame {
 	
 	/** 
 	 * constructor with different defaultJoinTeam
+	 * 
 	 * @param defaultJoinTeam team a player joins by default when logging into a server
 	 * */
 	public ManhuntGame(int defaultJoinTeam) {

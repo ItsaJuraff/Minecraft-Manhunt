@@ -33,7 +33,12 @@ public class ManhuntTeam {
 		
 		// create new team
 		Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
-		this.team = board.registerNewTeam(this.name);
+		
+		try {
+			this.team = board.registerNewTeam(this.name);
+		} catch (IllegalArgumentException e) {
+			this.team = board.getTeam(this.name);
+		}
 		
 		// create score
 		this.memberScore = obj.getScore(this.name);
