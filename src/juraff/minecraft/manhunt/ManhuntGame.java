@@ -72,8 +72,14 @@ public class ManhuntGame {
 	
 	/** starts the manhunt game */
 	public void start() {
-		// TODO add checks to see if there are players on teams
 		this.startFlag = true;
+		
+		// set everyone to desired gamemode
+		for (ManhuntTeam team : this.getTeams()) {
+			for (Player player : team.getAllPlayers()) {
+				player.setGameMode(team.gamemode);
+			}
+		}
 	}
 	
 	public void stop() {

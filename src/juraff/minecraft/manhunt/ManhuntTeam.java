@@ -19,7 +19,7 @@ public class ManhuntTeam {
 	/** minecraft Score for players on each team */
 	private Score memberScore;
 	/** default gamemode */
-	private GameMode gamemode = GameMode.SURVIVAL;
+	public GameMode gamemode = GameMode.SURVIVAL;
 	/** Vector of player on the team */
 	private Vector<Player> players;
 
