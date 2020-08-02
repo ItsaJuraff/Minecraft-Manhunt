@@ -3,15 +3,11 @@ package juraff.minecraft.manhunt;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
-
-import net.md_5.bungee.api.ChatColor;
-
 import org.bukkit.event.block.Action;
 import org.bukkit.entity.Player;
-
-import java.util.Vector;
-
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 
 public class ListenerCompass implements Listener{
 	/** game instance */
@@ -31,39 +27,45 @@ public class ListenerCompass implements Listener{
 		// get player
 		Player user = event.getPlayer();
 
-		if(event.getAction() == (Action.RIGHT_CLICK_AIR) || event.getAction() == (Action.RIGHT_CLICK_BLOCK)) {
-			// init variables
-			Player target = null;
-			double lowest = 0.;
-			
-			// get runner team
-			ManhuntTeam runners = game.getTeams().get(ManhuntTeamName.Speedrunners.getIndex());
-			
-			// TODO should be changed to team
-			// loop through players
-			for(Player player2 : runners.getPlayers()) {
-				if (player2 == user) {
-					continue;
+		if (event.getAction() == (Action.RIGHT_CLICK_AIR) || event.getAction() == (Action.RIGHT_CLICK_BLOCK)) {
+			// check if item in hand is compass
+			if (event.getMaterial() == Material.COMPASS) {
+				// init variables
+				Player target = null;
+				double lowest = 0.;
+				
+				// get runner team
+				ManhuntTeam runners = game.getTeams().get(ManhuntTeamName.Speedrunners.getIndex());
+				
+				// loop through players
+				for(Player player2 : runners.getPlayers()) {
+					// checks
+					if (player2 == user) {
+						continue;
+					}
+					if (player2.getWorld() != user.getWorld()) {
+						continue;
+					}
+					
+					// get distance from player
+					Location loc = player2.getLocation();
+					double dist = loc.distance(user.getLocation());
+					
+					// find nearest player
+					if(lowest > dist || target == null) {
+						lowest = dist;
+						target = player2;
+					}
 				}
 				
-				// get distance from player
-				Location loc = player2.getLocation();
-				double dist = loc.distance(user.getLocation());
-				
-				// find nearest player
-				if(lowest > dist || target == null) {
-					lowest = dist;
-					target = player2;
+				if (target == null) {
+					// send message when player not found
+					user.sendMessage(ChatColor.RED + "No player found!");
+				} else {
+					// send message to user
+					user.sendMessage(ChatColor.GREEN + String.format("Tracking %s" , target.getName()));
+					event.getPlayer().setCompassTarget(target.getLocation());
 				}
-			}
-			
-			if (target == null) {
-				// send message when player not found
-				user.sendMessage(ChatColor.RED + "No player found!");
-			} else {
-				// send message to user
-				user.sendMessage(ChatColor.GREEN + String.format("Tracking %s" , target.getName()));
-				event.getPlayer().setCompassTarget(target.getLocation());
 			}
 
 	    }
