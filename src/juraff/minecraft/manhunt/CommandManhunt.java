@@ -6,6 +6,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.ChatColor;
+
 
 public class CommandManhunt implements CommandExecutor {
 	/** stores team instance */
@@ -18,38 +20,40 @@ public class CommandManhunt implements CommandExecutor {
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+		// cast sender to player
 		Player player = (Player) sender;
 		
 		if (args.length == 0) {
 			// show help message
-			sender.sendMessage("Please provide at least one argument");
+			sender.sendMessage("Please provide at least one positional argument");
 			return false;
 		} else if (args[0].equalsIgnoreCase("list")) {
 			// prints current count of players for each team
 			Vector<ManhuntTeam> teams = game.getTeams();
 			for (ManhuntTeam team : teams) {
-				String output = String.format("%s: %d", team.getName(), team.getNumPlayers());
+				String output = String.format("%s: %d",team.getName(), team.getNumPlayers());
 				sender.sendMessage(output);
 			}
 			return true;
 		} else if (args[0].equalsIgnoreCase("join")) {
 			// get team index with input of string or int
-			int team = 0;
+			ManhuntTeam team = null;
 			try {
-				team = Integer.parseInt(args[1]);
+				team = this.game.getTeamByIndex(Integer.parseInt(args[1]));
 			} catch(NumberFormatException e) {
-				Vector<ManhuntTeam> teams = game.getTeams();
-				for (int i = 0; i < teams.size(); i++) {
-					if (args[1].equalsIgnoreCase(teams.get(i).getName())) {
-						team = i;
-					}
-				}
+				team = this.game.getTeamByName(args[1]);
 			}
-			// add player to team
-			this.game.joinTeam(player, team);
-			String msg = String.format("Joined team %s", game.getTeams().get(team).getName());
-			sender.sendMessage(msg);
-			return true;
+			// TODO add check if team is valid
+			if (team != null) {
+				// add player to team
+				game.joinTeam(player, team);
+				String msg = String.format("Joined team %s", team.getName());
+				sender.sendMessage(msg);
+				return true;
+			} else {
+				sender.sendMessage(ChatColor.RED + "Team does not exists!");
+				return false;
+			}
 		} else if (args[0].equalsIgnoreCase("leave")) {
 			// leave team
 			this.game.leaveTeam(player);

@@ -60,47 +60,91 @@ public class ManhuntGame {
 	}
 	
 	
-	/** getter for team */
-	public Vector<ManhuntTeam> getTeams() { return this.teams; }
+	/**
+	 * getter for team
+	 * 
+	 * @return Vector of teams*/
+	public Vector<ManhuntTeam> getTeams() {
+		return this.teams;
+	}
 	
 	/**
 	 * adds player to default team 
 	 * 
 	 * @param player
 	 * */
-	public void joinTeam(Player player) {
-		this.joinTeam(player, defaultJoinTeam);
+	public ManhuntTeam joinDefaultTeam(Player player) {
+		ManhuntTeam team;
+		team = this.getTeamByIndex(defaultJoinTeam);
+		team.addPlayer(player);
+		return team;
 	}
 	
 	/**
-	 * adds player to team
+	 * gets a team based on its name
 	 * 
-	 * @param index index of team to join*/
-	public void joinTeam(Player player, int index) {
-		// remove player
+	 * @param index
+	 * @return
+	 */
+	public ManhuntTeam getTeamByIndex(int index) {
+		return this.teams.get(index);
+	}
+	
+	
+	/**
+	 * gets a team based on its name
+	 * 
+	 * @param name team name
+	 * @return
+	 */
+	public ManhuntTeam getTeamByName(String name) {
+		ManhuntTeam team = null;
 		for (ManhuntTeam t : teams) {
-			t.removePlayer(player);
+			if (t.getName().equalsIgnoreCase(name)) {
+				team = t;
+			}
 		}
-		// add player to new team
-		teams.get(index).addPlayer(player);
+		return team;
 	}
 	
 	/**
-	 * removes player from their current team
+	 * adds a player to the team object, handles removing the player from their
+	 * previous team
+	 * 
+	 * the previous team is returned since you are passing the new team into the function
+	 * so most likely you will also have their current team
+	 * 
+	 * @param player 
+	 * @param team
+	 * @return previous team of player
+	 */
+	public ManhuntTeam joinTeam(Player player, ManhuntTeam team) {
+		// removes player from current team
+		ManhuntTeam currTeam;
+		currTeam = this.getPlayerTeam(player);
+		currTeam.removePlayer(player);
+		
+		// add player to new team
+		team.addPlayer(player);
+		
+		return team;
+	}
+	
+	/**
+	 * removes player from their current team and assigns player to defaultLeaveTeam
 	 * 
 	 * @param player
+	 * @return team player has joined
 	 * */
-	public void leaveTeam(Player player) {
-		int index;
-		index = this.getPlayerTeamIndex(player);
+	public ManhuntTeam leaveTeam(Player player) {
+		// get default team
+		ManhuntTeam newTeam;
+		newTeam = this.getTeamByIndex(defaultLeaveTeam);
 		
-		// remove player
-		if (index > -1) {
-			teams.get(index).removePlayer(player);
-		}
+		// join new team
+		newTeam = this.joinTeam(player, newTeam);
 		
-		// add player to default team
-		this.joinTeam(player, defaultLeaveTeam);
+		return newTeam;
 	}
 	
 	/**

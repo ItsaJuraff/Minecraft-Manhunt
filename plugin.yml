@@ -9,5 +9,5 @@ commands:
       # permissions: your.permission here
    manhunt:
       description: manages team
-      usage: /manhunt <other-command>
+      usage: /manhunt [list, join, leave]
       aliases: [mh, hunt]

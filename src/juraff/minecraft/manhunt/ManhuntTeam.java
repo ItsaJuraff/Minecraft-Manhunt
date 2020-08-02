@@ -45,6 +45,9 @@ public class ManhuntTeam {
 		
 		// create score
 		this.memberScore = obj.getScore(this.name);
+		
+		// update scoreboard to initial value / replace previous ones
+		this.updateScoreboard();
 	}
 	
 	

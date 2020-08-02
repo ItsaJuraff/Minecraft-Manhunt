@@ -16,6 +16,6 @@ public class ListenerJoin implements Listener {
 	/** join the default team */
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
-		this.game.joinTeam(event.getPlayer());
+		this.game.joinDefaultTeam(event.getPlayer());
 	}
 }
