@@ -6,10 +6,10 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public class ListenerJoin implements Listener {
 	/** game instance */
-	private Game game;
+	private ManhuntGame game;
 	
 	/** default constructor */
-	public ListenerJoin(Game game) {
+	public ListenerJoin(ManhuntGame game) {
 		this.game = game;
 	}
 	

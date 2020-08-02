@@ -2,27 +2,42 @@ package juraff.minecraft.manhunt;
 
 import java.util.Vector;
 
+import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 
-public class Game {
-	/** team names */
-	private String[] names = {"Hunters", "Speedrunners", "Spectators"};
+import net.md_5.bungee.api.ChatColor;
+
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Score;
+
+
+public class ManhuntGame {
 	/** default team when player joins server */
 	private int defaultJoinTeam = 0;
 	/** default team when player leaves a team */
 	private int defaultLeaveTeam = 2;
 	/** vector to stores teams in */
-	private Vector<Team> teams;
+	private Vector<ManhuntTeam> teams;
 	
 	/** holds return codes for functions where applicable */
 	public boolean rc;
 	
 	
 	/** default constructor */
-	public Game() {
-		this.teams = new Vector<Team>();
-		for (int i = 0; i < this.names.length; i++) {
-			this.teams.add(new Team(this.names[i]));
+	public ManhuntGame() {
+		// create scoreboard
+		Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
+		Objective obj = board.registerNewObjective("TeamCount", "dummy", "Teams");
+		obj.setDisplaySlot(DisplaySlot.SIDEBAR);
+		
+		// register teams
+		this.teams = new Vector<ManhuntTeam>();
+		for (ManhuntTeamName tname : ManhuntTeamName.values()) {
+			this.teams.add(new ManhuntTeam(tname.name(), obj, tname.getGamemode()));
 		}
 	}
 	
@@ -30,7 +45,7 @@ public class Game {
 	 * constructor with different defaultJoinTeam
 	 * @param defaultJoinTeam team a player joins by default when logging into a server
 	 * */
-	public Game(int defaultJoinTeam) {
+	public ManhuntGame(int defaultJoinTeam) {
 		this();
 		this.defaultJoinTeam = defaultJoinTeam;
 	}
@@ -39,7 +54,7 @@ public class Game {
 	 * constructor with different defaultJoinTeam, defaultLeaveTeam
 	 * @param defaultJoinTeam team index a player joins by default when logging into a server
 	 * @param defaultLeaveTeam team index a player joins when leaving their current team*/
-	public Game(int defaultJoinTeam, int defaultLeaveTeam) {
+	public ManhuntGame(int defaultJoinTeam, int defaultLeaveTeam) {
 		this();
 		this.defaultJoinTeam = defaultJoinTeam;
 		this.defaultLeaveTeam = defaultLeaveTeam;
@@ -47,44 +62,51 @@ public class Game {
 	
 	
 	/** getter for team */
-	public Vector<Team> getTeams() { return this.teams; }
+	public Vector<ManhuntTeam> getTeams() { return this.teams; }
 	
-	/** adds player to default team */
-	public boolean joinTeam(Player player) {
-		return this.joinTeam(player, defaultJoinTeam);
+	/**
+	 * adds player to default team 
+	 * 
+	 * @param player
+	 * */
+	public void joinTeam(Player player) {
+		this.joinTeam(player, defaultJoinTeam);
 	}
 	
-	/** adds player to team */
-	public boolean joinTeam(Player player, int team) {
+	/**
+	 * adds player to team
+	 * 
+	 * @param index index of team to join*/
+	public void joinTeam(Player player, int index) {
 		// remove player
-		for (Team t : teams) {
+		for (ManhuntTeam t : teams) {
 			t.removePlayer(player);
 		}
 		// add player to new team
-		return teams.get(team).addPlayer(player);
+		teams.get(index).addPlayer(player);
 	}
 	
-	/** removes player from current team */
-	public boolean leaveTeam(Player player) {
-		boolean rc = false;
+	/**
+	 * removes player from current team
+	 * 
+	 * @param player
+	 * */
+	public void leaveTeam(Player player) {
 		int index;
 		index = this.getTeam(player);
 		
 		// remove player
 		if (index > -1) {
-			rc = teams.get(index).removePlayer(player);
+			teams.get(index).removePlayer(player);
 		}
 		
 		// add player to default team
-		if (rc) {
-			rc = this.joinTeam(player, defaultLeaveTeam);
-		}
-		
-		return rc;
+		this.joinTeam(player, defaultLeaveTeam);
 	}
 	
 	/**
 	 * gets the index of the team that player is current a part of
+	 * 
 	 * @return index of team, values of -1 means player is not a part of a team
 	 * */
 	public int getTeam(Player player) {

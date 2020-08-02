@@ -5,7 +5,7 @@ public class Manhunt extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		// create object to holds teams
-		Game game = new Game();
+		ManhuntGame game = new ManhuntGame();
 		
 		// register events
 		this.getServer().getPluginManager().registerEvents(new ListenerJoin(game), this);
