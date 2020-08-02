@@ -20,11 +20,11 @@ public class ManhuntTeam {
 
 	
 	/**
-	 * creates team with name
+	 * creates team with name, scoreboard objectives, and default gamemode
 	 * 
 	 * @param name name of team
 	 * @param obj objective to display
-	 * 
+	 * @param gamemode desired gamemode
 	 * */
 	public ManhuntTeam(String name, Objective obj, GameMode gamemode) {
 		this.players = new Vector<Player>();

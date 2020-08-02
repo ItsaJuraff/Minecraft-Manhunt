@@ -12,38 +12,36 @@ import org.bukkit.Location;
 
 public class ListenerCompass implements Listener{
 
-	Location target;
-	String targetName;
-	
 	@EventHandler
 	public void onItemClick(PlayerInteractEvent event) {
-		
+		// get player
 		Player user = event.getPlayer();
-		//Location loc = new Location (user.getWorld(),0.0,0.0,0.0);
-		
 
 		if(event.getAction() == (Action.RIGHT_CLICK_AIR) || event.getAction() == (Action.RIGHT_CLICK_BLOCK)) {
-	        
-			Location loc;
-			double lowest =60000000.;
-			double dist;
+			Player target = null;
+			double lowest = 0.;
 			
+			// TODO should be changed to team
+			// loop through players
 			for(Player player2 : user.getWorld().getPlayers()) {
+				if (player2 == user) {
+					continue;
+				}
 				
-				if(player2 != user) {
-					loc = player2.getLocation();
-					dist = loc.distance(user.getLocation());
-					
-					if(lowest > dist) {
-						lowest = dist;
-						target = player2.getLocation();
-						targetName = player2.getName();
-					}
+				// get distance from player
+				Location loc = player2.getLocation();
+				double dist = loc.distance(user.getLocation());
+				
+				// find nearest player
+				if(lowest > dist || target == null) {
+					lowest = dist;
+					target = player2;
 				}
 			}
 			
-			user.sendMessage(ChatColor.GREEN + String.format("Tracking %s" , targetName));
-			event.getPlayer().setCompassTarget(target);
+			// send message to user
+			user.sendMessage(ChatColor.GREEN + String.format("Tracking %s" , target.getName()));
+			event.getPlayer().setCompassTarget(target.getLocation());
 	    }
 	}
 }
