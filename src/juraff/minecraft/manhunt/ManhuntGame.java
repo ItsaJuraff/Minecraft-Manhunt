@@ -10,6 +10,8 @@ import org.bukkit.scoreboard.Objective;
 
 
 public class ManhuntGame {
+	/** flag when game has started */
+	private boolean startFlag = false;
 	/** default team when player joins server */
 	private int defaultJoinTeam = 0;
 	/** default team when player leaves a team */
@@ -59,6 +61,24 @@ public class ManhuntGame {
 		this.defaultLeaveTeam = defaultLeaveTeam;
 	}
 	
+	/**
+	 * checks if game has started
+	 * 
+	 * @return if game started
+	 */
+	public boolean hasStarted() {
+		return this.startFlag;
+	}
+	
+	/** starts the manhunt game */
+	public void start() {
+		// TODO add checks to see if there are players on teams
+		this.startFlag = true;
+	}
+	
+	public void stop() {
+		this.startFlag = false;
+	}
 	
 	/**
 	 * getter for team
