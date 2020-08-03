@@ -1,8 +1,13 @@
 package juraff.minecraft.manhunt;
 
+import org.bukkit.Bukkit;
+import org.bukkit.GameRule;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Scoreboard;
 
 public class ManhuntGame {
 	/** flag when game has started */
@@ -13,7 +18,11 @@ public class ManhuntGame {
 	private ManhuntTeam defaultLeaveTeam = ManhuntTeam.Spectators;
 	
 	/** default constructor */
-	public ManhuntGame() {}
+	public ManhuntGame() {
+		World overworld = Bukkit.getWorlds().get(0);
+		overworld.setTime(6000);
+		overworld.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+	}
 	
 	/** 
 	 * constructor with different defaultJoinTeam
@@ -47,6 +56,12 @@ public class ManhuntGame {
 	public void start() {
 		this.startFlag = true;
 		
+		// hide scoreboard
+		Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
+		board.clearSlot(DisplaySlot.SIDEBAR);
+		
+		// 
+		
 		for (ManhuntTeam team : ManhuntTeam.values()) {
 			for (Player player : team.getAllPlayers()) {
 				// set gamemode
@@ -62,6 +77,10 @@ public class ManhuntGame {
 	/** stops the manhunt game */
 	public void stop() {
 		this.startFlag = false;
+		
+		// set game rule
+		World overworld = Bukkit.getWorlds().get(0);
+		overworld.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true);
 	}
 	
 	/**

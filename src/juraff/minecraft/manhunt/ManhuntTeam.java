@@ -4,6 +4,7 @@ import java.util.Vector;
 import java.lang.String;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -22,6 +23,8 @@ public enum ManhuntTeam {
 	public GameMode gamemode;
 	/** index associated with each gamemode */
 	public int index;
+	/** team color */
+	public ChatColor color;
 	
 	/** name representing ManhuntTeam */
 	private String  name;

@@ -37,7 +37,7 @@ public class CommandManhunt implements CommandExecutor {
 				case "list":
 					// prints current count of players for each team
 					for (ManhuntTeam team : ManhuntTeam.values()) {
-						String output = String.format("%s: %d",team.getName(), team.getNumPlayers());
+						String output = String.format("%d - %s: %d",team.index, team.getName(), team.getNumPlayers());
 						sender.sendMessage(output);
 					}
 					return true;
@@ -49,7 +49,6 @@ public class CommandManhunt implements CommandExecutor {
 					} catch(NumberFormatException e) {
 						team = this.game.getTeamByName(args[1]);
 					}
-					// TODO add check if team is valid
 					if (team != null) {
 						// add player to team
 						game.joinTeam(player, team);
