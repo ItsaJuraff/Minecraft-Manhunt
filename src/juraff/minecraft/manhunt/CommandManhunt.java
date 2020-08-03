@@ -1,7 +1,5 @@
 package juraff.minecraft.manhunt;
 
-import java.util.Vector;
-
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -27,6 +25,8 @@ public class CommandManhunt implements CommandExecutor {
 			// show help message
 			sender.sendMessage("Please provide at least one positional argument");
 			return false;
+		} else if (args[0].equalsIgnoreCase("compass")) {
+			game.giveCompass(player);
 		} else if (game.hasStarted()) {
 			// ingame commands
 			if (args[0].equalsIgnoreCase("stop")) {
@@ -37,8 +37,7 @@ public class CommandManhunt implements CommandExecutor {
 			switch (args[0].toLowerCase()) {
 				case "list":
 					// prints current count of players for each team
-					Vector<ManhuntTeam> teams = game.getTeams();
-					for (ManhuntTeam team : teams) {
+					for (ManhuntTeam team : ManhuntTeam.values()) {
 						String output = String.format("%s: %d",team.getName(), team.getNumPlayers());
 						sender.sendMessage(output);
 					}

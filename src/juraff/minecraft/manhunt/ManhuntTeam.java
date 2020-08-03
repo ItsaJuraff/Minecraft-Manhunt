@@ -6,23 +6,32 @@ import java.lang.String;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
-public class ManhuntTeam {
+public enum ManhuntTeam {
+	Hunters(0, "Hunters", GameMode.SURVIVAL),
+	Speedrunners(1, "Speedrunners", GameMode.SURVIVAL),
+	Spectators(2, "Spectators", GameMode.SPECTATOR);
+	
+	
+	/** gamemode for the team */
+	public GameMode gamemode;
+	/** index associated with each gamemode */
+	public int index;
+	
 	/** name representing ManhuntTeam */
-	private String name;
+	private String  name;
 	/** minecraft Team */
 	private Team team;
 	/** minecraft Score for players on each team */
 	private Score memberScore;
-	/** default gamemode */
-	public GameMode gamemode = GameMode.SURVIVAL;
 	/** Vector of player on the team */
 	private Vector<Player> players;
-
+	
 	
 	/**
 	 * default constructor for ManhuntTeam, default gamemode is survival
@@ -30,13 +39,27 @@ public class ManhuntTeam {
 	 * @param name name of team
 	 * @param obj objective to display current team count
 	 * */
-	public ManhuntTeam(String name, Objective obj) {
+	private ManhuntTeam(int index, String name, GameMode gamemode) {
+		// new vector for players
 		this.players = new Vector<Player>();
+		// take parameters
 		this.name = name;
+		this.gamemode = gamemode;
+		this.index = index;
 		
-		// create new team
+		// get main scoreboard
 		Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
 		
+		// get or create scoreboard
+		Objective obj;
+		try {
+			obj = board.registerNewObjective("TeamCount", "dummy", "Teams");
+		} catch (IllegalArgumentException e) {
+			obj = board.getObjective("TeamCount");
+		}
+		obj.setDisplaySlot(DisplaySlot.SIDEBAR);
+		
+		// get or create team
 		try {
 			this.team = board.registerNewTeam(this.name);
 		} catch (IllegalArgumentException e) {
@@ -45,22 +68,7 @@ public class ManhuntTeam {
 		
 		// create score
 		this.memberScore = obj.getScore(this.name);
-		
-		// update scoreboard to initial value / replace previous ones
 		this.updateScoreboard();
-	}
-	
-	
-	/**
-	 * creates team with name, scoreboard objectives, and default gamemode
-	 * 
-	 * @param name name of team
-	 * @param obj objective to display current team count
-	 * @param gamemode desired gamemode
-	 * */
-	public ManhuntTeam(String name, Objective obj, GameMode gamemode) {
-		this(name, obj);
-		this.gamemode = gamemode;
 	}
 	
 	

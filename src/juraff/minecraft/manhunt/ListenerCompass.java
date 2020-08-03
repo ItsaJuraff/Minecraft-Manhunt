@@ -9,18 +9,14 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 
+
 public class ListenerCompass implements Listener{
-	/** game instance */
-	private ManhuntGame game;
-	
 	/**
 	 * default constructor
 	 * 
 	 * @param game manhunt game
 	 */
-	public ListenerCompass(ManhuntGame game) {
-		this.game = game;
-	}
+	public ListenerCompass() {}
 
 	@EventHandler
 	public void onItemClick(PlayerInteractEvent event) {
@@ -33,7 +29,7 @@ public class ListenerCompass implements Listener{
 				return;
 			}
 			// check if player is part of hunters
-			ManhuntTeam hunters = game.getTeams().get(ManhuntTeamName.Hunters.getIndex());
+			ManhuntTeam hunters = ManhuntTeam.Hunters;
 			if (!hunters.checkPlayer(user)) {
 				return;
 			}
@@ -43,7 +39,7 @@ public class ListenerCompass implements Listener{
 			double lowest = 0.;
 			
 			// get runner team
-			ManhuntTeam runners = game.getTeams().get(ManhuntTeamName.Speedrunners.getIndex());
+			ManhuntTeam runners = ManhuntTeam.Speedrunners;
 			
 			// loop through players
 			for(Player player2 : runners.getAllPlayers()) {

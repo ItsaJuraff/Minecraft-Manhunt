@@ -1,61 +1,38 @@
 package juraff.minecraft.manhunt;
 
-import java.util.Vector;
-
-import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
+import org.bukkit.inventory.ItemStack;
 
 
 public class ManhuntGame {
 	/** flag when game has started */
 	private boolean startFlag = false;
 	/** default team when player joins server */
-	private int defaultJoinTeam = 0;
+	private ManhuntTeam defaultJoinTeam = ManhuntTeam.Hunters;
 	/** default team when player leaves a team */
-	private int defaultLeaveTeam = 2;
-	/** vector to stores teams in */
-	private Vector<ManhuntTeam> teams;
-	
+	private ManhuntTeam defaultLeaveTeam = ManhuntTeam.Spectators;
 	
 	/** default constructor */
-	public ManhuntGame() {
-		// create scoreboard
-		Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
-		// create new objective if does not exist
-		Objective obj;
-		try {
-			obj = board.registerNewObjective("TeamCount", "dummy", "Teams");
-		} catch (IllegalArgumentException e) {
-			obj = board.getObjective("TeamCount");
-		}
-		
-		obj.setDisplaySlot(DisplaySlot.SIDEBAR);
-		
-		// register teams
-		this.teams = new Vector<ManhuntTeam>();
-		for (ManhuntTeamName tname : ManhuntTeamName.values()) {
-			this.teams.add(new ManhuntTeam(tname.name(), obj, tname.getGamemode()));
-		}
-	}
+	public ManhuntGame() {}
 	
 	/** 
 	 * constructor with different defaultJoinTeam
 	 * 
 	 * @param defaultJoinTeam team a player joins by default when logging into a server
 	 * */
-	public ManhuntGame(int defaultJoinTeam) {
+	public ManhuntGame(ManhuntTeam defaultJoinTeam) {
 		this();
 		this.defaultJoinTeam = defaultJoinTeam;
 	}
 	
 	/**
 	 * constructor with different defaultJoinTeam, defaultLeaveTeam
+	 * 
 	 * @param defaultJoinTeam team index a player joins by default when logging into a server
-	 * @param defaultLeaveTeam team index a player joins when leaving their current team*/
-	public ManhuntGame(int defaultJoinTeam, int defaultLeaveTeam) {
+	 * @param defaultLeaveTeam team index a player joins when leaving their current team
+	 * */
+	public ManhuntGame(ManhuntTeam defaultJoinTeam, ManhuntTeam defaultLeaveTeam) {
 		this();
 		this.defaultJoinTeam = defaultJoinTeam;
 		this.defaultLeaveTeam = defaultLeaveTeam;
@@ -74,24 +51,21 @@ public class ManhuntGame {
 	public void start() {
 		this.startFlag = true;
 		
-		// set everyone to desired gamemode
-		for (ManhuntTeam team : this.getTeams()) {
+		for (ManhuntTeam team : ManhuntTeam.values()) {
 			for (Player player : team.getAllPlayers()) {
+				// set gamemode
 				player.setGameMode(team.gamemode);
+				// give hunters a compass
+				if (team == ManhuntTeam.Hunters) {
+					this.giveCompass(player);
+				}
 			}
 		}
 	}
 	
+	/** stops the manhunt game */
 	public void stop() {
 		this.startFlag = false;
-	}
-	
-	/**
-	 * getter for team
-	 * 
-	 * @return Vector of teams*/
-	public Vector<ManhuntTeam> getTeams() {
-		return this.teams;
 	}
 	
 	/**
@@ -99,11 +73,19 @@ public class ManhuntGame {
 	 * 
 	 * @param player
 	 * */
-	public ManhuntTeam joinDefaultTeam(Player player) {
-		ManhuntTeam team;
-		team = this.getTeamByIndex(defaultJoinTeam);
-		team.addPlayer(player);
-		return team;
+	public void joinDefaultTeam(Player player) {
+		defaultJoinTeam.addPlayer(player);
+		return;
+	}
+	
+	/**
+	 * gives a player a compass
+	 * 
+	 * @param player
+	 */
+	public void giveCompass(Player player) {
+		ItemStack compass = new ItemStack(Material.COMPASS);
+		player.getInventory().addItem(compass);
 	}
 	
 	/**
@@ -113,9 +95,14 @@ public class ManhuntGame {
 	 * @return
 	 */
 	public ManhuntTeam getTeamByIndex(int index) {
-		return this.teams.get(index);
+		ManhuntTeam team = null;
+		for (ManhuntTeam t : ManhuntTeam.values()) {
+			if (index == t.index) {
+				team = t;
+			}
+		}
+		return team;
 	}
-	
 	
 	/**
 	 * gets a team based on its name
@@ -125,7 +112,7 @@ public class ManhuntGame {
 	 */
 	public ManhuntTeam getTeamByName(String name) {
 		ManhuntTeam team = null;
-		for (ManhuntTeam t : teams) {
+		for (ManhuntTeam t : ManhuntTeam.values()) {
 			if (t.getName().equalsIgnoreCase(name)) {
 				team = t;
 			}
@@ -162,15 +149,10 @@ public class ManhuntGame {
 	 * @param player
 	 * @return team player has joined
 	 * */
-	public ManhuntTeam leaveTeam(Player player) {
-		// get default team
-		ManhuntTeam newTeam;
-		newTeam = this.getTeamByIndex(defaultLeaveTeam);
-		
-		// join new team
-		newTeam = this.joinTeam(player, newTeam);
-		
-		return newTeam;
+	public void leaveTeam(Player player) {
+		// join default leave team
+		this.joinTeam(player, defaultLeaveTeam);
+		return;
 	}
 	
 	/**
@@ -181,7 +163,7 @@ public class ManhuntGame {
 	 */
 	public ManhuntTeam getPlayerTeam(Player player) {
 		ManhuntTeam team = null;
-		for (ManhuntTeam t : this.teams) {
+		for (ManhuntTeam t : ManhuntTeam.values()) {
 			if (t.checkPlayer(player)) {
 				team = t;
 				break;
@@ -196,12 +178,12 @@ public class ManhuntGame {
 	 * @return index of team, values of -1 means player is not a part of a team
 	 * */
 	public int getPlayerTeamIndex(Player player) {
-		int team_idx = -1;
-		for (int i = 0; i < this.teams.size(); i++) {
-			if (teams.get(i).checkPlayer(player)) {
-				team_idx = i;
+		ManhuntTeam team = null;
+		for (ManhuntTeam t : ManhuntTeam.values()) {
+			if (t.checkPlayer(player)) {
+				team = t;
 			}
 		}
-		return team_idx;
+		return team.index;
 	}
 }
