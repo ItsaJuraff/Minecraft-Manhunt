@@ -35,7 +35,6 @@ public enum ManhuntTeam {
 	
 	/**
 	 * default constructor for ManhuntTeam, default gamemode is survival
-	 * 
 	 * @param name name of team
 	 * @param obj objective to display current team count
 	 * */
@@ -74,21 +73,18 @@ public enum ManhuntTeam {
 	
 	/**
 	 * name getter
-	 * 
 	 * @return name
 	 * */
 	public String getName() { return this.name; }
 	
 	/**
 	 * name setter 
-	 * 
 	 * @param name desired name
 	 * */
 	public void setName(String name) { this.name = name; }
 	
 	/**
 	 * gets the vector of players
-	 * 
 	 * @return vector of players
 	 * */
 	public Vector<Player> getAllPlayers() {
@@ -102,7 +98,6 @@ public enum ManhuntTeam {
 	
 	/**
 	 * gets the number of players on the team
-	 * 
 	 * @return number of players
 	 * */
 	public int getNumPlayers() {
@@ -111,7 +106,6 @@ public enum ManhuntTeam {
 	
 	/**
 	 * adds player to Team
-	 * 
 	 * @param player player object to add
 	 * */
 	public void addPlayer(Player player) {
@@ -123,7 +117,6 @@ public enum ManhuntTeam {
 	
 	/**
 	 * removes player from Team
-	 * 
 	 * @param player player object to remove
 	 * */
 	public void removePlayer(Player player) {
@@ -134,7 +127,6 @@ public enum ManhuntTeam {
 	
 	/**
 	 * gets the player at an index
-	 * 
 	 * @param index index of player vector to get
 	 * @return player at index
 	 * */
@@ -144,7 +136,6 @@ public enum ManhuntTeam {
 	
 	/**
 	 * checks if player is on team, returns index of player if found, -1 if not found
-	 * 
 	 * @param player player to get index of
 	 * @return index of player
 	 * */
@@ -154,7 +145,6 @@ public enum ManhuntTeam {
 	
 	/**
 	 * checks if player exists on the team
-	 * 
 	 * @param player player to check for
 	 * @return boolean if player is on team
 	 * */

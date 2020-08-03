@@ -4,7 +4,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-
 public class ManhuntGame {
 	/** flag when game has started */
 	private boolean startFlag = false;
@@ -18,7 +17,6 @@ public class ManhuntGame {
 	
 	/** 
 	 * constructor with different defaultJoinTeam
-	 * 
 	 * @param defaultJoinTeam team a player joins by default when logging into a server
 	 * */
 	public ManhuntGame(ManhuntTeam defaultJoinTeam) {
@@ -28,7 +26,6 @@ public class ManhuntGame {
 	
 	/**
 	 * constructor with different defaultJoinTeam, defaultLeaveTeam
-	 * 
 	 * @param defaultJoinTeam team index a player joins by default when logging into a server
 	 * @param defaultLeaveTeam team index a player joins when leaving their current team
 	 * */
@@ -40,7 +37,6 @@ public class ManhuntGame {
 	
 	/**
 	 * checks if game has started
-	 * 
 	 * @return if game started
 	 */
 	public boolean hasStarted() {
@@ -70,7 +66,6 @@ public class ManhuntGame {
 	
 	/**
 	 * adds player to default team 
-	 * 
 	 * @param player
 	 * */
 	public void joinDefaultTeam(Player player) {
@@ -80,7 +75,6 @@ public class ManhuntGame {
 	
 	/**
 	 * gives a player a compass
-	 * 
 	 * @param player
 	 */
 	public void giveCompass(Player player) {
@@ -90,7 +84,6 @@ public class ManhuntGame {
 	
 	/**
 	 * gets a team based on its name
-	 * 
 	 * @param index
 	 * @return
 	 */
@@ -106,7 +99,6 @@ public class ManhuntGame {
 	
 	/**
 	 * gets a team based on its name
-	 * 
 	 * @param name team name
 	 * @return
 	 */
@@ -145,7 +137,6 @@ public class ManhuntGame {
 	
 	/**
 	 * removes player from their current team and assigns player to defaultLeaveTeam
-	 * 
 	 * @param player
 	 * @return team player has joined
 	 * */
@@ -157,7 +148,6 @@ public class ManhuntGame {
 	
 	/**
 	 * gets team that the player is currently on
-	 * 
 	 * @param player
 	 * @return ManhuntTeam null if no team if found
 	 */
@@ -174,7 +164,6 @@ public class ManhuntGame {
 	
 	/**
 	 * gets the index of the team that player is current a part of
-	 * 
 	 * @return index of team, values of -1 means player is not a part of a team
 	 * */
 	public int getPlayerTeamIndex(Player player) {

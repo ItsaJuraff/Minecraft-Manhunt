@@ -6,7 +6,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.ChatColor;
 
-
 public class CommandManhunt implements CommandExecutor {
 	/** stores team instance */
 	private ManhuntGame game;

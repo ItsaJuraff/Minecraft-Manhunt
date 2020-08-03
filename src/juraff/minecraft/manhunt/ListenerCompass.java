@@ -9,11 +9,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 
-
 public class ListenerCompass implements Listener{
 	/**
 	 * default constructor
-	 * 
 	 * @param game manhunt game
 	 */
 	public ListenerCompass() {}
@@ -68,7 +66,7 @@ public class ListenerCompass implements Listener{
 			} else {
 				// send message to user
 				user.sendMessage(ChatColor.GREEN + String.format("Tracking %s" , target.getName()));
-				event.getPlayer().setCompassTarget(target.getLocation());
+				user.setCompassTarget(target.getLocation());
 			}
 
 	    }
