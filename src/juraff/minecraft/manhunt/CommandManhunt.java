@@ -25,7 +25,9 @@ public class CommandManhunt implements CommandExecutor {
 			sender.sendMessage("Please provide at least one positional argument");
 			return false;
 		} else if (args[0].equalsIgnoreCase("compass")) {
-			game.giveCompass(player);
+			if (ManhuntTeam.Hunters.checkPlayer(player)) {
+				game.giveCompass(player);
+			}
 		} else if (game.hasStarted()) {
 			// ingame commands
 			if (args[0].equalsIgnoreCase("stop")) {
