@@ -58,7 +58,7 @@ public class CommandManhunt implements CommandExecutor {
 						sender.sendMessage(msg);
 						return true;
 					} else {
-						sender.sendMessage(ChatColor.RED + "Team does not exists!");
+						sender.sendMessage(ChatColor.RED + "Team does not exist!");
 						return false;
 					}
 				case "leave":

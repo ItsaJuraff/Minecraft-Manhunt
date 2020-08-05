@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameRule;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -98,6 +99,7 @@ public class ManhuntGame {
 	 */
 	public void giveCompass(Player player) {
 		ItemStack compass = new ItemStack(Material.COMPASS);
+		compass.addUnsafeEnchantment(Enchantment.VANISHING_CURSE,1);
 		player.getInventory().addItem(compass);
 	}
 	
