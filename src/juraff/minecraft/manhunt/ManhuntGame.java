@@ -7,6 +7,7 @@ import org.bukkit.World;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.CompassMeta;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Scoreboard;
 
@@ -57,15 +58,21 @@ public class ManhuntGame {
 	public void start() {
 		this.startFlag = true;
 		
+		World overworld = Bukkit.getWorlds().get(0);
+		overworld.setTime(0);
+		overworld.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true);
+		
 		// hide scoreboard
 		Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
 		board.clearSlot(DisplaySlot.SIDEBAR);
 		
-		// 
-		
+	
 		for (ManhuntTeam team : ManhuntTeam.values()) {
 			for (Player player : team.getAllPlayers()) {
 				// set gamemode
+				player.setHealth(20.00);
+				player.setSaturation(5);
+				player.setFoodLevel(20);
 				player.setGameMode(team.gamemode);
 				// give hunters a compass
 				if (team == ManhuntTeam.Hunters) {
@@ -100,6 +107,8 @@ public class ManhuntGame {
 	public void giveCompass(Player player) {
 		ItemStack compass = new ItemStack(Material.COMPASS);
 		compass.addUnsafeEnchantment(Enchantment.VANISHING_CURSE,1);
+		CompassMeta cmeta = (CompassMeta) compass.getItemMeta();
+		cmeta.setLodestoneTracked(false);
 		player.getInventory().addItem(compass);
 	}
 	
