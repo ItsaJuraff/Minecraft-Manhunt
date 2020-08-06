@@ -13,7 +13,7 @@ public class Manhunt extends JavaPlugin {
 		this.getServer().getPluginManager().registerEvents(new ListenerCompass(), this);
 		
 		// register commands
-		this.getCommand("test").setExecutor(new CommandTest());
+		//this.getCommand("test").setExecutor(new CommandTest());
 		this.getCommand("manhunt").setExecutor(new CommandManhunt(game));
 	}
 	
