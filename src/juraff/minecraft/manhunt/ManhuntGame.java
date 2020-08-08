@@ -58,6 +58,8 @@ public class ManhuntGame {
 	public void start() {
 		this.startFlag = true;
 		
+		defaultJoinTeam = ManhuntTeam.Spectators;
+		
 		World overworld = Bukkit.getWorlds().get(0);
 		overworld.setTime(0);
 		overworld.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true);

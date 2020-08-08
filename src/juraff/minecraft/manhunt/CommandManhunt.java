@@ -34,40 +34,41 @@ public class CommandManhunt implements CommandExecutor {
 				game.stop();
 			}
 		} else if (!game.hasStarted()) {
-			// pregame commands
+			if (args[0].equalsIgnoreCase("start")) {
+				game.start();
+			}
+		} else {
 			switch (args[0].toLowerCase()) {
-				case "list":
-					// prints current count of players for each team
-					for (ManhuntTeam team : ManhuntTeam.values()) {
-						String output = String.format("%d - %s: %d",team.index, team.getName(), team.getNumPlayers());
-						sender.sendMessage(output);
-					}
+			case "list":
+				// prints current count of players for each team
+				for (ManhuntTeam team : ManhuntTeam.values()) {
+					String output = String.format("%d - %s: %d",team.index, team.getName(), team.getNumPlayers());
+					sender.sendMessage(output);
+				}
+				return true;
+			case "join":
+				// get team index with input of string or int
+				ManhuntTeam team = null;
+				try {
+					team = this.game.getTeamByIndex(Integer.parseInt(args[1]));
+				} catch(NumberFormatException e) {
+					team = this.game.getTeamByName(args[1]);
+				}
+				if (team != null) {
+					// add player to team
+					game.joinTeam(player, team);
+					String msg = String.format("Joined team %s", team.getName());
+					sender.sendMessage(msg);
 					return true;
-				case "join":
-					// get team index with input of string or int
-					ManhuntTeam team = null;
-					try {
-						team = this.game.getTeamByIndex(Integer.parseInt(args[1]));
-					} catch(NumberFormatException e) {
-						team = this.game.getTeamByName(args[1]);
-					}
-					if (team != null) {
-						// add player to team
-						game.joinTeam(player, team);
-						String msg = String.format("Joined team %s", team.getName());
-						sender.sendMessage(msg);
-						return true;
-					} else {
-						sender.sendMessage(ChatColor.RED + "Team does not exist!");
-						return false;
-					}
-				case "leave":
-					// leave team
-					this.game.leaveTeam(player);
-					sender.sendMessage("Left team");
-					return true;
-				case "start":
-					game.start();
+				} else {
+					sender.sendMessage(ChatColor.RED + "Team does not exist!");
+					return false;
+				}
+			case "leave":
+				// leave team
+				this.game.leaveTeam(player);
+				sender.sendMessage("Left team");
+				return true;
 			}
 		}
 		return true;
